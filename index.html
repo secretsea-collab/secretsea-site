@@ -242,6 +242,31 @@
 
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity 0.6s ease, transform 0.6s ease; }
   .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Proof slider ---------- */
+  .slider-outer{
+    background:var(--panel-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:80px 0;
+  }
+  .slider-wrap{ max-width:420px; margin:0 auto; }
+  .slider{
+    position:relative; border-radius:6px; overflow:hidden; border:1px solid var(--line);
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.7);
+    background:#000;
+    aspect-ratio: 3 / 4.1;
+  }
+  .slide{
+    position:absolute; inset:0; opacity:0; transition:opacity 0.7s ease;
+  }
+  .slide.active{ opacity:1; }
+  .slide img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+  .slider-dots{ display:flex; justify-content:center; gap:8px; margin-top:18px; }
+  .slider-dots button{
+    width:7px; height:7px; border-radius:50%; border:none; background:var(--line); cursor:pointer; padding:0;
+  }
+  .slider-dots button.active{ background:var(--brass); }
+  .slider-caption{ text-align:center; margin-top:14px; font-size:12.5px; color:var(--paper-dim); }
+  .slider-caption b{ color:var(--brass); }
 </style>
 </head>
 <body>
@@ -259,7 +284,7 @@
       <a href="#how">How it Works</a>
       <a href="#faq">FAQ</a>
     </div>
-    <a href="#" class="nav-cta">Join Free</a>
+    <a href="https://t.me/+NW7Z5Ws0sY43ODMx" class="nav-cta" target="_blank" rel="noopener">Join Free</a>
   </nav>
 </header>
 
@@ -270,7 +295,7 @@
       <h1>Let the robot<br>hold the <em>discipline</em>.</h1>
       <p class="lead">Secret EA runs a hedge-based strategy on your MT4 or MT5 account around the clock, while the VIP channel hands you the same signals and setups behind it — no screen-watching required.</p>
       <div class="btn-row">
-        <a href="#" class="btn-primary">Join the Telegram Channel →</a>
+        <a href="https://t.me/+NW7Z5Ws0sY43ODMx" class="btn-primary" target="_blank" rel="noopener">Join the Telegram Channel →</a>
         <a href="#how" class="btn-ghost">See how it works</a>
       </div>
       <div class="trust-row">
@@ -372,13 +397,33 @@
   </div>
 </section>
 
+<div class="slider-outer">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:36px;">
+      <div class="eyebrow">Inside the channel</div>
+      <h2>What members are sharing.</h2>
+      <p>Screenshots shared directly in the Telegram community by members. Individual results vary and are not independently verified — see the risk notice below.</p>
+    </div>
+    <div class="slider-wrap">
+      <div class="slider" id="proofSlider">
+        <div class="slide active"><img src="images/slide-1.jpg" alt="Community screenshot 1"></div>
+        <div class="slide"><img src="images/slide-2.jpg" alt="Community screenshot 2"></div>
+        <div class="slide"><img src="images/slide-3.jpg" alt="Community screenshot 3"></div>
+        <div class="slide"><img src="images/slide-4.jpg" alt="Community screenshot 4"></div>
+      </div>
+      <div class="slider-dots" id="sliderDots"></div>
+      <div class="slider-caption">Shared inside the <b>Secret EA</b> Telegram community</div>
+    </div>
+  </div>
+</div>
+
 <div class="band">
   <div class="wrap band-inner" style="padding:64px 0;">
     <div class="reveal">
       <h2>Join the free VIP Telegram channel.</h2>
       <p>Signals, copy trade access and the EA itself — everything is inside, and it costs nothing to join.</p>
       <div class="btn-row" style="margin-top:22px; margin-bottom:0;">
-        <a href="#" class="btn-primary">Join on Telegram →</a>
+        <a href="https://t.me/+NW7Z5Ws0sY43ODMx" class="btn-primary" target="_blank" rel="noopener">Join on Telegram →</a>
       </div>
     </div>
     <div class="band-stats reveal">
@@ -436,7 +481,7 @@
       <a href="#offer">Copy Trade</a>
       <a href="#how">How it Works</a>
       <a href="#faq">FAQ</a>
-      <a href="#">Telegram</a>
+      <a href="https://t.me/+NW7Z5Ws0sY43ODMx" target="_blank" rel="noopener">Telegram</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -482,6 +527,30 @@
         a.style.maxHeight = a.scrollHeight + 'px';
       }
     });
+  });
+
+  // Proof slider — auto-advance
+  const slides = document.querySelectorAll('#proofSlider .slide');
+  const dotsWrap = document.getElementById('sliderDots');
+  let current = 0;
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    if(i === 0) d.classList.add('active');
+    d.addEventListener('click', () => goToSlide(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = dotsWrap.querySelectorAll('button');
+  function goToSlide(i){
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  let sliderTimer = setInterval(() => goToSlide((current + 1) % slides.length), 4000);
+  document.getElementById('proofSlider').addEventListener('mouseenter', () => clearInterval(sliderTimer));
+  document.getElementById('proofSlider').addEventListener('mouseleave', () => {
+    sliderTimer = setInterval(() => goToSlide((current + 1) % slides.length), 4000);
   });
 
   // Reveal on scroll
